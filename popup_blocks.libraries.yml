@@ -1,0 +1,7 @@
+drupal.block:
+  version: VERSION
+  css:
+    theme:
+      css/popup.blocks.css: {}  
+  js:
+    js/popup_blocks.js: {}

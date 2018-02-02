@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains popup_blocks.module.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+// function popup_blocks_form_devel_execute_form_alter(&$form) {
+//   $form['#attached']['library'][] = 'devel_clipboard/devel';
+// }
+
+function popup_blocks_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'popup_blocks/drupal.block';
+  $attachments['#attached']['drupalSettings']['example']['foo'] = 'bar';
+}
