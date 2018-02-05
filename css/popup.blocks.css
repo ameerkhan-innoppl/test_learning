@@ -1,4 +1,4 @@
-.modal {
+.modall {
   /*display: none;  Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -13,7 +13,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal-contentl {
 	border: 1px solid #888 !important;
 	width: 200px;
 	position: absolute;

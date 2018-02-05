@@ -13,6 +13,23 @@
 // }
 
 function popup_blocks_page_attachments(array &$attachments) {
+  // ksm($attachments);
   $attachments['#attached']['library'][] = 'popup_blocks/drupal.block';
   $attachments['#attached']['drupalSettings']['example']['foo'] = 'bar';
+}
+
+/**
+ * Implements hook_library_info_alter().
+ *
+ * Replaces style sheets declared in libraries with color-altered style sheets.
+ */
+function popup_blocks_library_info_alter(&$libraries, $extension) {
+  $themes = array_keys(\Drupal::service('theme_handler')->listInfo());
+  // ksm($themes);
+  // ksm($libraries);
+  
+  if ($extension == 'popup_blocks') {
+    $libraries['drupal.block']['css']['theme']['public://popup_blocks/block_1/position.css'] = array();
+    ksm($libraries);  
+  }
 }
