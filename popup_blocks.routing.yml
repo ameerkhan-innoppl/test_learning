@@ -8,12 +8,21 @@
 #   requirements:
 #     _permission: 'execute php code'
     
-popup_blocks.settings:
-  path: 'admin/config/media/popup_blocks'
+# popup_blocks.settings:
+#   path: 'admin/config/media/popup_blocks'
+#   defaults:
+#     _form: '\Drupal\popup_blocks\Form\PopupBlocksSettingsForm'
+#     _title: 'Popup blocks settings'
+#   requirements:
+#     _permission: 'administer site configuration'
+#   options:
+#     _admin_route: TRUE
+popup_blocks.add:
+  path: 'admin/config/media/popup_blocks/add'
   defaults:
-    _form: '\Drupal\popup_blocks\Form\PopupBlocksSettingsForm'
-    _title: 'Popup blocks settings'
+    _title: 'Add Popup Blocks'
+    _form: '\Drupal\popup_blocks\Form\PopupBlocksAddForm'
   requirements:
     _permission: 'administer site configuration'
   options:
-    _admin_route: TRUE
+    _admin_route: TRUE    

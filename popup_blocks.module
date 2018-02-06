@@ -4,6 +4,7 @@
  * @file
  * Contains popup_blocks.module.
  */
+use Drupal\popup_blocks\PopupBlocksStorage;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -13,9 +14,26 @@
 // }
 
 function popup_blocks_page_attachments(array &$attachments) {
-  // ksm($attachments);
+$blockManager = \Drupal::service('plugin.manager.block');
+$contextRepository = \Drupal::service('context.repository');
+
+// Get blocks definition
+// $definitions = $blockManager->getDefinitionsForContexts($contextRepository->getAvailableContexts());  
+  // ksm($definitions);
+
+
+
+  $popup_settings = [];
+  $block_html_ids = [];
+  foreach ($entries = PopupBlocksStorage::load() as $entry) {
+    $theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+    $html_block_name = str_replace('_', '-', $entry->bid);
+    $entry->bid = "block-".$html_block_name;   
+    // Sanitize each entry.
+    $popup_settings[] = array_map('Drupal\Component\Utility\SafeMarkup::checkPlain', (array) $entry);
+  }
   $attachments['#attached']['library'][] = 'popup_blocks/drupal.block';
-  $attachments['#attached']['drupalSettings']['example']['foo'] = 'bar';
+  $attachments['#attached']['drupalSettings']['popup_blocks']['popup_settings'] = $popup_settings;
 }
 
 /**
@@ -30,6 +48,6 @@ function popup_blocks_library_info_alter(&$libraries, $extension) {
   
   if ($extension == 'popup_blocks') {
     $libraries['drupal.block']['css']['theme']['public://popup_blocks/block_1/position.css'] = array();
-    ksm($libraries);  
+    // ksm($libraries);  
   }
 }
