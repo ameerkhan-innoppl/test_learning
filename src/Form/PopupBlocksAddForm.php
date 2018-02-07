@@ -75,10 +75,10 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
     // Add a checkbox to registration form for terms.
     $form['add']['block_list'] = [
       '#type' => 'select',
-      '#title' => t("Choose the code"),
+      '#title' => t("Choose the block"),
       '#options' => $block_ids,
       '#weight' => '-99',
-      '#description' => 'Choose the block.',
+      // '#description' => 'Choose the block.',
     ];    
     $form['add']['layout'] = array(
       '#type' => 'radios',
@@ -90,6 +90,22 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
           ->t('Top left'),
         1 => $this
           ->t('Top Right'),
+        2 => $this
+          ->t('Bottom left'),
+        3 => $this
+          ->t('Bottom Right'),
+        4 => $this
+          ->t('Center'),
+        5 => $this
+          ->t('Top center'),           
+        6 => $this
+          ->t('Top bar'),         
+        7 => $this
+          ->t('Bottom bar'),
+        8 => $this
+          ->t('Left bar'),
+        9 => $this
+          ->t('Right bar'),                                                
       ),
     );    
     $form['add']['name'] = [

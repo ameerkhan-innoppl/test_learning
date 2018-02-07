@@ -18,10 +18,30 @@
 		];
 		var popup_settings = drupalSettings.popup_blocks.popup_settings;
 		$.each(popup_settings, function (index, values) {
+
 		  var block_id = values.bid;
 		  var modal_class = block_id+"-modal";
+		  var modal_close_class = block_id+"-modal-close";
+		  
 		  $("#"+block_id).wrap('<div id="popup-blocks" class="'+modal_class+'"></div>');
-		  if (values.overlay) {
+		  $("#"+block_id).prepend($('<span class="'+modal_close_class+'">&times;</span>'));
+		  $("."+modal_close_class).css({
+		  	"color": "#aaaaaa", 
+		  	"float": "right", 
+		  	"font-size": "16px", 
+		  	"font-weight": "bold",
+		  	"border": "1px solid", 
+		  	"padding": "0 10px",
+		  	"margin": "1%", 
+		  });	
+
+		  // $("."+modal_class).hide();
+		  if (values.overlay == 1) {
+		    // setTimeout(function() {
+		    //     $("."+modal_class).show('blind', {}, 500);
+		    // }, 2000);		 
+		    // $("."+modal_class).delay(3000).fadeOut('slow'); 	
+		    // $("."+modal_class).show();
 			  $("."+modal_class).css({
 			  	"position": "fixed", 
 			  	"z-index": "1", 
@@ -41,7 +61,7 @@
 		  	"background-color": "#fefefe",
 		  });
 
-	    if (values.overlay) {
+	    if (values.overlay == 1) {
 	      if (values.layout != 4) {
 				  $("#"+block_id).css({
 				  	"position": "absolute",
@@ -52,6 +72,7 @@
 				  case '0':
 					  $("#"+block_id).css({
 					  	"top": "0px",
+					  	"width": "400px",
 					  });	 
 				    break;
 				  // Top right
@@ -59,6 +80,7 @@
 					  $("#"+block_id).css({
 					  	"top": "0px",
 					  	"right": "0px",
+					  	"width": "400px",
 					  });
 				    break;
 				  // Bottom left  
@@ -66,6 +88,7 @@
 					  $("#"+block_id).css({
 					  	"bottom": "75px",
 					  	// "bottom": values.bottom,
+					  	"width": "400px",
 					  });
 				    break;
 				  // Bottom right  
@@ -84,12 +107,46 @@
 					  	"width": "200px",
 					  	// "bottom": values.bottom,
 					  });
-				      break;
-				  case 5:
-				      day = "Friday";
-				      break;
-				  case  6:
-				      day = "Saturday";
+				    break;
+				  // Top Center
+				  case '5':
+					  $("#"+block_id).css({
+					  	"top": "0",
+					  	"left": "20%",
+					  	"right": "20%",					  	
+					  });
+				    break;
+				  // Top bar
+				  case '6':
+					  $("#"+block_id).css({
+							"top": "0",
+					  });
+				    break;
+				  // Right bar
+				  case '7':
+					  $("#"+block_id).css({
+					  	"top": "0",
+					  	"bottom": "0",
+					  	"right": "0",
+					  	"width": "200px",
+					  	// "bottom": values.bottom,
+					  });
+				    break;
+				  // Bottom bar
+				  case '8':
+					  $("#"+block_id).css({
+					  	"bottom": "65px",
+					  });
+				    break;		
+				  // Right bar
+				  case '9':
+					  $("#"+block_id).css({
+					  	"top": "0",
+					  	"bottom": "0",
+					  	"left": "0",
+					  	"width": "200px",
+					  });
+				    break;				    		    				    				    
 				}
       } 
       else {
@@ -101,6 +158,8 @@
 				  case '0':
 					  $("#"+block_id).css({
 					  	"top": "0px",
+					  	"left": "0px",
+					  	"width": "400px",
 					  });	 
 				    break;
 				  // Top right
@@ -108,13 +167,16 @@
 					  $("#"+block_id).css({
 					  	"top": "0px",
 					  	"right": "0px",
+					  	"width": "400px",
 					  });
 				    break;
 				  // Bottom left  
 				  case '2':
 					  $("#"+block_id).css({
-					  	"bottom": "75px",
+					  	"left": "0px",
+					  	"bottom": "-25px",
 					  	// "bottom": values.bottom,
+					  	"width": "400px",
 					  });
 				    break;
 				  // Bottom right  
@@ -133,12 +195,46 @@
 					  	"width": "200px",
 					  	// "bottom": values.bottom,
 					  });
-				      break;
-				  case 5:
-				      day = "Friday";
-				      break;
-				  case  6:
-				      day = "Saturday";
+				    break;
+				  // Center
+				  case '5':
+					  $("#"+block_id).css({
+					  	"margin": "auto",
+					  	"width": "200px",
+					  	// "bottom": values.bottom,
+					  });
+				    break;
+				  // Center
+				  case '6':
+					  $("#"+block_id).css({
+					  	"top": "0px",
+					  	"right": "0px",
+					  });
+				    break;
+				  // Center
+				  case '7':
+					  $("#"+block_id).css({
+					  	"margin": "auto",
+					  	"width": "200px",
+					  	// "bottom": values.bottom,
+					  });
+				    break;
+				  // Center
+				  case '8':
+					  $("#"+block_id).css({
+					  	"margin": "auto",
+					  	"width": "200px",
+					  	// "bottom": values.bottom,
+					  });
+				    break;		
+				  // Center
+				  case '9':
+					  $("#"+block_id).css({
+					  	"margin": "auto",
+					  	"width": "200px",
+					  	// "bottom": values.bottom,
+					  });
+				    break;				    		    				    				    
 				}
       }
 
