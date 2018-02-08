@@ -64,13 +64,10 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
     $block_ids = \Drupal::entityQuery('block')->execute();   
     $form = [];
 
-    $form['message'] = [
-      '#markup' => $this->t('Add an entry to the dbtng_example table.'),
-    ];
-
     $form['add'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Add a person entry'),
+      '#type' => 'details',
+      '#title' => $this->t('Popup settings'),
+      '#open' => TRUE,
     ];
     // Add a checkbox to registration form for terms.
     $form['add']['block_list'] = [
@@ -107,28 +104,35 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
         9 => $this
           ->t('Right bar'),                                                
       ),
-    );    
-    $form['add']['name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Name'),
-      '#size' => 15,
+    );
+    $form['add']['overlay'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show popup with overlay'),
+      '#default_value' => 1,
     ];
-    $form['add']['surname'] = [
+    $form['add']['escape'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('ESC key to close the popup'),
+      '#default_value' => 1,
+    ];     
+    $form['add']['delay'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Surname'),
-      '#size' => 15,
-    ];
-    $form['add']['age'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Age'),
+      '#title' => $this->t('Delays'),
       '#size' => 5,
-      '#description' => $this->t("Values greater than 127 will cause an exception. Try it - it's a great example why exception handling is needed with DTBNG."),
-    ];
-    $form['add']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Create'),
+      '#default_value' => 0,
+      '#description' => $this->t("Show popup after this seconds. 0 will show immediately after the page load."),
     ];
 
+    $form['adjustments'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Adjustment settings'),
+      '#open' => TRUE,
+      '#description' => $this->t("Once you created, you can adjust the positions on this popup's edit page."),
+    ];    
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Convert to popup'),
+    ];    
     return $form;
   }
 
@@ -154,6 +158,9 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
     $entry = [
       'bid' => $form_state->getValue('block_list'),
       'layout' => $form_state->getValue('layout'),
+      'overlay' => $form_state->getValue('overlay'),
+      'escape' => $form_state->getValue('escape'),
+      'delay' => $form_state->getValue('delay'),
       'status' => 1,
     ];
     $return = PopupBlocksStorage::insert($entry);
