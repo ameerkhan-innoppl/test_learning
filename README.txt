@@ -1,1 +1,1 @@
-Devel Clipboard.
+simple_popup_blocks

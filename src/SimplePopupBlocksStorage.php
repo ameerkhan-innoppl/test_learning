@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\popup_blocks;
+namespace Drupal\simple_popup_blocks;
 
 /**
- * Class PopupBlocksStorage.
+ * Class SimplePopupBlocksStorage.
  */
-class PopupBlocksStorage {
+class SimplePopupBlocksStorage {
 
   /**
    * Save an entry in the database.
@@ -31,7 +31,7 @@ class PopupBlocksStorage {
   public static function insert(array $entry) {
     $return_value = NULL;
     try {
-      $return_value = db_insert('popup_blocks')
+      $return_value = db_insert('simple_popup_blocks')
         ->fields($entry)
         ->execute();
     }
@@ -58,8 +58,9 @@ class PopupBlocksStorage {
    */
   public static function update(array $entry) {
     try {
+      ksm($entry);
       // db_update()...->execute() returns the number of rows updated.
-      $count = db_update('popup_blocks')
+      $count = db_update('simple_popup_blocks')
         ->fields($entry)
         ->condition('pid', $entry['pid'])
         ->execute();
@@ -84,7 +85,7 @@ class PopupBlocksStorage {
    * @see db_delete()
    */
   public static function delete(array $entry) {
-    db_delete('popup_blocks')
+    db_delete('simple_popup_blocks')
       ->condition('pid', $entry['pid'])
       ->execute();
   }
@@ -161,15 +162,12 @@ class PopupBlocksStorage {
    * @see http://drupal.org/node/310072
    * @see http://drupal.org/node/310075
    */
-  public static function load(array $entry = []) {
+  public static function load($pid) {
     // Read all fields from the dbtng_example table.
-    $select = db_select('popup_blocks', 'pb');
+    $select = db_select('simple_popup_blocks', 'pb');
     $select->fields('pb');
+    $select->condition('pid', $pid);
 
-    // Add each field and value as a condition to this query.
-    foreach ($entry as $field => $value) {
-      $select->condition($field, $value);
-    }
     // Return the result in object format.
     return $select->execute()->fetchAll();
   }

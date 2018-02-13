@@ -1,19 +1,19 @@
 <?php
 
-namespace Drupal\popup_blocks\Form;
+namespace Drupal\simple_popup_blocks\Form;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\popup_blocks\PopupBlocksStorage;
+use Drupal\simple_popup_blocks\SimplePopupBlocksStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form to add a database entry, with all the interesting fields.
  */
-class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
+class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
 
   use StringTranslationTrait;
 
@@ -53,7 +53,7 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'popup_blocks_add_form';
+    return 'simple_popup_blocks_add_form';
   }
 
   /**
@@ -63,24 +63,45 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
     
     $block_ids = \Drupal::entityQuery('block')->execute();   
     $form = [];
-
-    $form['add'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Popup settings'),
-      '#open' => TRUE,
-    ];
+   
+    $form['type'] = array(
+      '#type' => 'radios',
+      '#title' => $this
+        ->t('Choose the type'),
+      '#default_value' => 0,
+      '#options' => array(
+        0 => $this
+          ->t('Drupal blocks'),
+        1 => $this
+          ->t('Custom css id or class'),
+      ),
+    );    
     // Add a checkbox to registration form for terms.
-    $form['add']['block_list'] = [
+    $form['block_list'] = [
       '#type' => 'select',
       '#title' => t("Choose the block"),
       '#options' => $block_ids,
-      '#weight' => '-99',
-      // '#description' => 'Choose the block.',
+      '#states' => [
+        'visible' => [
+          ':input[name="type"]' => ['value' => 0],
+        ],
+      ],
+    ];
+    // Add a checkbox to registration form for terms.
+    $form['custom_css'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add css id or class starting with # or .'),
+      '#default_value' => t("#custom-css-id"),
+      '#description' => $this->t("Ex: #my-profile, #custom_div_cls, .someclass, .mypopup-class."),
+      '#states' => [
+        'visible' => [
+          ':input[name="type"]' => ['value' => 1],
+        ],
+      ],
     ];    
-    $form['add']['layout'] = array(
+    $form['layout'] = array(
       '#type' => 'radios',
-      '#title' => $this
-        ->t('Choose layout'),
+      '#title' => $this->t('Choose layout'),
       '#default_value' => 0,
       '#options' => array(
         0 => $this
@@ -105,29 +126,46 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
           ->t('Right bar'),                                                
       ),
     );
-    $form['add']['overlay'] = [
+
+   
+    $form['minimize'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show popup with overlay'),
+      '#title' => $this->t('Include minimize button'),
       '#default_value' => 1,
-    ];
-    $form['add']['escape'] = [
+    ];    
+    $form['close'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include close button'),
+      '#default_value' => 1,
+    ];  
+    $form['escape'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('ESC key to close the popup'),
       '#default_value' => 1,
-    ];     
-    $form['add']['delay'] = [
+    ]; 
+    $form['overlay'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show popup with overlay'),
+      '#default_value' => 1,
+    ];             
+    $form['delay'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Delays'),
       '#size' => 5,
       '#default_value' => 0,
       '#description' => $this->t("Show popup after this seconds. 0 will show immediately after the page load."),
     ];
-
     $form['adjustments'] = [
       '#type' => 'details',
       '#title' => $this->t('Adjustment settings'),
       '#open' => TRUE,
       '#description' => $this->t("Once you created, you can adjust the positions on this popup's edit page."),
+    ];
+    $form['adjustments']['width'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Width'),
+      '#default_value' => 400,
+      '#description' => $this->t("Add popup width in pixels"),
     ];    
     $form['submit'] = [
       '#type' => 'submit',
@@ -154,16 +192,26 @@ class PopupBlocksAddForm implements FormInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    if ($form_state->getValue('type') == 0) {
+      $identifier = $form_state->getValue('block_list');
+    } 
+    else {
+      $identifier = $form_state->getValue('custom_css');
+    }
     // Save the submitted entry.
     $entry = [
-      'bid' => $form_state->getValue('block_list'),
+      'identifier' => $identifier,
+      'type' => $form_state->getValue('type'),
       'layout' => $form_state->getValue('layout'),
       'overlay' => $form_state->getValue('overlay'),
       'escape' => $form_state->getValue('escape'),
       'delay' => $form_state->getValue('delay'),
+      'minimize' => $form_state->getValue('minimize'),
+      'close' => $form_state->getValue('close'),
+      'width' => $form_state->getValue('width'),
       'status' => 1,
     ];
-    $return = PopupBlocksStorage::insert($entry);
+    $return = SimplePopupBlocksStorage::insert($entry);
     if ($return) {
       drupal_set_message($this->t('Created entry @entry', ['@entry' => print_r($entry, TRUE)]));
     }

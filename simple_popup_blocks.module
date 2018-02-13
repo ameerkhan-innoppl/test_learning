@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Contains simple_popup_blocks.module.
+ */
+use Drupal\simple_popup_blocks\SimplePopupBlocksStorage;
+
+
+function simple_popup_blocks_page_attachments(array &$attachments) {
+  $popup_settings = [];
+  $block_html_ids = [];
+  foreach ($entries = SimplePopupBlocksStorage::load() as $entry) {
+    $theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+    $html_block_name = str_replace('_', '-', $entry->bid);
+    $entry->bid = "block-".$html_block_name;   
+    // Sanitize each entry.
+    $popup_settings[] = array_map('Drupal\Component\Utility\SafeMarkup::checkPlain', (array) $entry);
+  }
+  $attachments['#attached']['library'][] = 'simple_popup_blocks/simple_popup_blocks';
+  $attachments['#attached']['drupalSettings']['simple_popup_blocks']['popup_settings'] = $popup_settings;
+}
+
+/**
+ * Implements hook_library_info_alter().
+ *
+ * Replaces style sheets declared in libraries with color-altered style sheets.
+ */
+function simple_popup_blocks_library_info_alter(&$libraries, $extension) {
+  $themes = array_keys(\Drupal::service('theme_handler')->listInfo());
+  // ksm($themes);
+  // ksm($libraries);
+  
+  if ($extension == 'simple_popup_blocks') {
+    $libraries['drupal.block']['css']['theme']['public://popup_blocks/block_1/position.css'] = array();
+    // ksm($libraries);  
+  }
+}

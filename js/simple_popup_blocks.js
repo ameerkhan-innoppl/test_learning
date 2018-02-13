@@ -11,10 +11,6 @@
 	$(document).ready(function() {
 
 		var popup_settings = drupalSettings.popup_blocks.popup_settings;
-		var popup_wrap;
-		var close_class;
-		var minimize_class;
-		var minimized_classs;		
 		$.each(popup_settings, function (index, values) {
 
 		  var block_id = values.bid;
@@ -26,7 +22,7 @@
 		  $("#"+block_id).wrap('<div id="popup-blocks" class="'+modal_class+'"></div>');
 		  $("#"+block_id).prepend($('<span class="'+modal_minimize_class+'">-</span>'));
 		  $("#"+block_id).prepend($('<span class="'+modal_close_class+'">&times;</span>'));
-		  $("."+modal_class).before($('<span class="'+modal_minimized_class+'"></span>'));
+		  $("#"+block_id).before($('<span class="'+modal_minimized_class+'"></span>'));
 
 		  $("."+modal_close_class).css({
 		  	"cursor": "pointer",
@@ -49,6 +45,7 @@
 		  	"padding": "20px 20px", 	
 		  	"background": "rgba(255, 170, 0, 0.34)", 	
 		  });
+		  
 			if (values.delay > 0) {
 				var delays = values.delay * 1000;
 			  $("."+modal_class).hide();
@@ -277,29 +274,22 @@
 				    break;				    		    				    				    
 				}
       }
-      window.onload = function(){
-				// Get the modal
-				popup_wrap = document.getElementsByClassName(modal_class)[0];
-				// Get the modal close btn
-				close_class =  document.getElementsByClassName(modal_close_class)[0];
-				minimize_class =  document.getElementsByClassName(modal_minimize_class)[0];
-				minimized_class =  document.getElementsByClassName(modal_minimized_class)[0];
-			  
-				// When the user clicks on <span> (x), close the modal
-				close_class.onclick = function() {
-				  popup_wrap.style.display = "none";
-				}
-				// When the user clicks on <span> (x), close the modal
-				minimize_class.onclick = function() {
-				  popup_wrap.style.display = "none";
-				  minimized_class.style.display = "block";
-				}
-				// When the user clicks on <span> (x), close the modal
-				minimized_class.onclick = function() {
-				  popup_wrap.style.display = "block";
-				  minimized_class.style.display = "none";
-				}  
-			}  
+
+	    $("."+modal_close_class).click(function(){
+			  $("#"+block_id).hide();
+	    });
+	    $("."+modal_minimize_class).click(function(){
+			  $("#"+block_id).hide();
+			  $("."+modal_minimized_class).show();
+	    });
+	    $("."+modal_minimized_class).click(function(){
+			  $("#"+block_id).show();
+			  $("."+modal_minimized_class).hide();
+	    });
+
+
+
+
 
 		});
 	});

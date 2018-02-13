@@ -12,23 +12,28 @@
  *
  * @see hook_schema()
  *
- * @ingroup dbtng_example
  */
-function popup_blocks_schema() {
-  $schema['popup_blocks'] = [
-    'description' => 'Stores popup_blocks entries.',
+function simple_popup_blocks_schema() {
+  $schema['simple_popup_blocks'] = [
+    'description' => 'Stores simple_popup_blocks entries.',
     'fields' => [
       'pid' => [
         'type' => 'serial',
         'not null' => TRUE,
-        'description' => 'Primary Key: Unique popup_blocks ID.',
+        'description' => 'Primary Key: Unique simple_popup_blocks ID.',
       ],
-      'bid' => [
+      'identifier' => [
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => '',
-        'description' => "Block id",
+        'description' => "Popup identifier",
+      ],      
+      'type' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "Popup types i.e drupal block or custom",
       ],      
       'layout' => [
         'type' => 'int',
@@ -36,6 +41,36 @@ function popup_blocks_schema() {
         'default' => 4,
         'description' => "Popup layout",
       ],
+      'overlay' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => "Popup overlay. 1 is true",
+      ],
+      'escape' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => "ESC button to close popup",
+      ], 
+      'delay' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 3,
+        'description' => "Popup delay in seconds",
+      ],  
+      'minimize' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => "Enable Popup minimize button",
+      ],    
+      'close' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => "Enable Popup close button",
+      ],        
       'top' => [
         'type' => 'int',
         'not null' => TRUE,
@@ -65,25 +100,7 @@ function popup_blocks_schema() {
         'not null' => TRUE,
         'default' => 999999,
         'description' => "Popup width in px",
-      ],      
-      'overlay' => [
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 1,
-        'description' => "Popup overlay. 1 is true",
-      ],
-      'escape' => [
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 1,
-        'description' => "ESC button to close popup",
-      ], 
-      'delay' => [
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 3,
-        'description' => "Popup delay in seconds",
-      ],                               
+      ],                                     
       'status' => [
         'type' => 'int',
         'not null' => TRUE,
@@ -92,6 +109,9 @@ function popup_blocks_schema() {
       ],      
     ],
     'primary key' => ['pid'],
+/*    'unique keys' => [
+      'identifier' => ['identifier']
+    ],*/    
   ];
 
   return $schema;
