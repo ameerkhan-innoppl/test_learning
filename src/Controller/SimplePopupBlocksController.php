@@ -3,85 +3,51 @@
 namespace Drupal\simple_popup_blocks\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Drupal\examples\Utility\DescriptionTemplateTrait;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\simple_popup_blocks\SimplePopupBlocksStorage;
 
 /**
- * Controller routines for page example routes.
+ * Controller routines for tablesort example routes.
  */
 class SimplePopupBlocksController extends ControllerBase {
 
-  use DescriptionTemplateTrait;
-
   /**
-   * {@inheritdoc}
-   */
-  protected function getModuleName() {
-    return 'simple_popup_blocks';
-  }
-
-  /**
-   * Constructs a simple page.
-   *
-   * The router _controller callback, maps the path
-   * 'examples/page-example/simple' to this method.
-   *
-   * _controller callbacks return a renderable array for the content area of the
-   * page. The theme system will later render and surround the content with the
-   * appropriate blocks, navigation, and styling.
+   * A simple controller method to explain what the tablesort example is about.
    */
   public function manage() {
-    return [
-      '#markup' => '<p>' . $this->t('Simple page: The quick brown fox jumps over the lazy dog.') . '</p>',
+    // We are going to output the results in a table with a nice header.
+    $header = [
+      // The header gives the table the information it needs in order to make
+      // the query calls for ordering. TableSort uses the field information
+      // to know what database column to sort by.
+      ['data' => t('Numbers')],
+      ['data' => t('Letters')],
+      ['data' => t('Mixture')],
     ];
-  }
 
-  /**
-   * A more complex _controller callback that takes arguments.
-   *
-   * This callback is mapped to the path
-   * 'examples/page-example/arguments/{first}/{second}'.
-   *
-   * The arguments in brackets are passed to this callback from the page URL.
-   * The placeholder names "first" and "second" can have any value but should
-   * match the callback method variable names; i.e. $first and $second.
-   *
-   * This function also demonstrates a more complex render array in the returned
-   * values. Instead of rendering the HTML with theme('item_list'), content is
-   * left un-rendered, and the theme function name is set using #theme. This
-   * content will now be rendered as late as possible, giving more parts of the
-   * system a chance to change it if necessary.
-   *
-   * Consult @link http://drupal.org/node/930760 Render Arrays documentation
-   * @endlink for details.
-   *
-   * @param string $first
-   *   A string to use, should be a number.
-   * @param string $second
-   *   Another string to use, should be a number.
-   *
-   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-   *   If the parameters are invalid.
-   */
-  public function arguments($first, $second) {
-    // Make sure you don't trust the URL to be safe! Always check for exploits.
-    if (!is_numeric($first) || !is_numeric($second)) {
-      // We will just show a standard "access denied" page in this case.
-      throw new AccessDeniedHttpException();
+    $result = SimplePopupBlocksStorage::loadAll();
+
+    $rows = [];
+    foreach ($result as $row) {
+      // Normally we would add some nice formatting to our rows
+      // but for our purpose we are simply going to add our row
+      // to the array.
+      $rows[] = ['data' => (array) $row];
     }
 
-    $list[] = $this->t("First number was @number.", ['@number' => $first]);
-    $list[] = $this->t("Second number was @number.", ['@number' => $second]);
-    $list[] = $this->t('The total was @number.', ['@number' => $first + $second]);
-
-    $render_array['page_example_arguments'] = [
-      // The theme function to apply to the #items.
-      '#theme' => 'item_list',
-      // The list itself.
-      '#items' => $list,
-      '#title' => $this->t('Argument Information'),
+    // Build the table for the nice output.
+    $build = [
+      '#markup' => '<p>' . t('The layout here is a themed as a table
+           that is sortable by clicking the header name.') . '</p>',
     ];
-    return $render_array;
+    $build['table'] = [
+      '#theme' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+    ];
+
+    return $build;
   }
 
 }

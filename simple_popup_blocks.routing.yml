@@ -24,4 +24,5 @@ simple_popup_blocks.edit:
   requirements:
     _permission: 'administer site configuration'
   options:
-    _admin_route: TRUE     
+    _admin_route: TRUE   
+    no_cache: 'TRUE'    
