@@ -7,4 +7,5 @@ simple_popup_blocks:
     js/simple_popup_blocks.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
     - core/drupalSettings

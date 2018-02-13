@@ -58,7 +58,6 @@ class SimplePopupBlocksStorage {
    */
   public static function update(array $entry) {
     try {
-      ksm($entry);
       // db_update()...->execute() returns the number of rows updated.
       $count = db_update('simple_popup_blocks')
         ->fields($entry)
@@ -172,6 +171,14 @@ class SimplePopupBlocksStorage {
     return $select->execute()->fetchAll();
   }
 
+  public static function loadAll() {
+    // Read all fields from the dbtng_example table.
+    $select = db_select('simple_popup_blocks', 'pb');
+    $select->fields('pb');
+
+    // Return the result in object format.
+    return $select->execute()->fetchAll();
+  }
   /**
    * Load dbtng_example records joined with user records.
    *

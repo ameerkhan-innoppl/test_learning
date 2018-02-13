@@ -8,10 +8,18 @@ simple_popup_blocks.add:
   options:
     _admin_route: TRUE    
 
+simple_popup_blocks.manage:
+  path: 'admin/config/media/simple_popup_blocks/manage'
+  defaults:
+    _controller: '\Drupal\simple_popup_blocks\Controller\SimplePopupBlocksController::manage'
+    _title: 'Manage popups'
+  requirements:
+    _permission: 'administer site configuration'
+
 simple_popup_blocks.edit:
   path: 'admin/config/media/simple_popup_blocks/manage/{first}'
   defaults:
-    _title: 'Add Popup Blocks'
+    _title: 'Manage Popup Blocks'
     _form: '\Drupal\simple_popup_blocks\Form\SimplePopupBlocksEditForm'
   requirements:
     _permission: 'administer site configuration'

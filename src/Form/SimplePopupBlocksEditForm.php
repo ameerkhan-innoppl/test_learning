@@ -64,14 +64,13 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
     // Query for items to display.
     $entry = SimplePopupBlocksStorage::load($first);
     // Tell the user if there is nothing to display.
-    if (empty($entry)) {
-      $form['no_values'] = [
-        '#value' => t('No entries exist in the table simple_popup_blocks table.'),
-      ];
-      return $form;
-    }
+    // if (empty($entry)) {
+    //   $form['no_values'] = [
+    //     '#value' => t('No entries exist in the table simple_popup_blocks table.'),
+    //   ];
+    //   return $form;
+    // }
     $entry = $entry[0];
-ksm($entry);
    
     $form = parent::buildForm($form, $form_state);  
     $form['status'] = [
@@ -80,6 +79,19 @@ ksm($entry);
       '#default_value' => $entry->status,
       '#weight' => -99,
     ]; 
+    $form['type']['#default_value'] = $entry->type;
+    $form['block_list']['#default_value'] = $entry->identifier;
+    $form['custom_css']['#default_value'] = $entry->identifier;
+    $form['css_selector']['#default_value'] = $entry->css_selector;
+    $form['layout']['#default_value'] = $entry->layout;
+    $form['minimize']['#default_value'] = $entry->minimize;
+    $form['close']['#default_value'] = $entry->close;
+    $form['escape']['#default_value'] = $entry->escape;
+    $form['overlay']['#default_value'] = $entry->overlay;
+    $form['delay']['#default_value'] = $entry->delay;
+    $form['width']['#default_value'] = $entry->width;
+    
+
     // Set a value by key.
     $form_state->set('simple_popup_blocks_id', $first);
     return $form;
@@ -88,7 +100,7 @@ ksm($entry);
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state, $first = NULL) {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
     // Verify that the user is logged-in.
     // if ($this->currentUser->isAnonymous()) {
     //   $form_state->setError($form['add'], $this->t('You must be logged in to add values to the database.'));
@@ -102,13 +114,21 @@ ksm($entry);
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state, $first = NULL) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
   // Get a value by key.
-  $first = $form_state->get('simple_popup_blocks_id');
+    $first = $form_state->get('simple_popup_blocks_id');
+    if ($form_state->getValue('type') == 0) {
+      $identifier = $form_state->getValue('block_list');
+    } 
+    else {
+      $identifier = $form_state->getValue('custom_css');
+    }
     // Save the submitted entry.  
     $entry = [
       'pid' => $first,
-      'identifier' => $form_state->getValue('block_list'),
+      'identifier' => $identifier,
+      'type' => $form_state->getValue('type'),
+      'css_selector' => $form_state->getValue('css_selector'),
       'layout' => $form_state->getValue('layout'),
       'width' => $form_state->getValue('width'),
       'overlay' => $form_state->getValue('overlay'),

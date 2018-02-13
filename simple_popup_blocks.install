@@ -34,7 +34,13 @@ function simple_popup_blocks_schema() {
         'not null' => TRUE,
         'default' => 0,
         'description' => "Popup types i.e drupal block or custom",
-      ],      
+      ],  
+      'css_selector' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "Css selector for div",
+      ],          
       'layout' => [
         'type' => 'int',
         'not null' => TRUE,

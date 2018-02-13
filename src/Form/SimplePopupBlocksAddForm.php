@@ -98,7 +98,24 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
           ':input[name="type"]' => ['value' => 1],
         ],
       ],
-    ];    
+    ];   
+    $form['css_selector'] = array(
+      '#type' => 'radios',
+      '#title' => $this
+        ->t('Css selector'),
+      '#default_value' => 1,
+      '#options' => array(
+        0 => $this
+          ->t('Css class (.)'),
+        1 => $this
+          ->t('Css id (#)'),
+      ),
+      '#states' => [
+        'visible' => [
+          ':input[name="type"]' => ['value' => 1],
+        ],
+      ],
+    );       
     $form['layout'] = array(
       '#type' => 'radios',
       '#title' => $this->t('Choose layout'),
@@ -202,6 +219,7 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
     $entry = [
       'identifier' => $identifier,
       'type' => $form_state->getValue('type'),
+      'css_selector' => $form_state->getValue('css_selector'),
       'layout' => $form_state->getValue('layout'),
       'overlay' => $form_state->getValue('overlay'),
       'escape' => $form_state->getValue('escape'),
@@ -213,7 +231,7 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
     ];
     $return = SimplePopupBlocksStorage::insert($entry);
     if ($return) {
-      drupal_set_message($this->t('Created entry @entry', ['@entry' => print_r($entry, TRUE)]));
+      drupal_set_message($this->t('Simple popup block created Successfully with this settings.'));
     }
   }
 
