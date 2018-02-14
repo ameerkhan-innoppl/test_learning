@@ -26,3 +26,13 @@ simple_popup_blocks.edit:
   options:
     _admin_route: TRUE   
     no_cache: 'TRUE'    
+
+simple_popup_blocks.delete:
+  path: 'admin/config/media/simple_popup_blocks/delete/{first}'
+  defaults:
+    _controller: '\Drupal\simple_popup_blocks\Controller\SimplePopupBlocksController::delete'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE   
+    no_cache: 'TRUE'  

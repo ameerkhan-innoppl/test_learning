@@ -2,6 +2,8 @@
 
 namespace Drupal\simple_popup_blocks\Form;
 
+use Drupal\Core\Url;
+use Drupal\Core\Routing;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -9,6 +11,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\simple_popup_blocks\SimplePopupBlocksStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Form to add a database entry, with all the interesting fields.
@@ -232,7 +235,13 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
     $return = SimplePopupBlocksStorage::insert($entry);
     if ($return) {
       drupal_set_message($this->t('Simple popup block created Successfully with this settings.'));
+      $url = Url::fromRoute('simple_popup_blocks.manage');
+      $form_state->setRedirectUrl($url);      
+    } 
+    else {
+      drupal_set_message($this->t('Error while creating.'),'error');
     }
+    
   }
 
 }
