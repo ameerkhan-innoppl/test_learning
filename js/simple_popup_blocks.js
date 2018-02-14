@@ -58,14 +58,6 @@
 			  	"padding": "0 10px",  	
 			  });				
 		  } 	
-		  
-
-		  
-			if (values.delay > 0) {
-				var delays = values.delay * 1000;
-			  $("."+modal_class).hide();
-			  $("."+modal_class).delay(delays).fadeIn('slow');
-			}
 
 		  $(css_identity+block_id).css({
 		  	"border": "1px solid #888 !important",		  	
@@ -290,7 +282,17 @@
 				    break;				    		    				    				    
 				}
       }
-
+			if (values.trigger == 0 && values.delay > 0) {
+				var delays = values.delay * 1000;
+			  $("."+modal_class).hide();
+			  $("."+modal_class).delay(delays).fadeIn('slow');
+			} 
+			else if(values.trigger == 1) {
+				$("."+modal_class).hide();
+		    $(values.trigger_selector).click(function(){
+				  $("."+modal_class).show();
+		    });				
+			} 
 	    $("."+modal_close_class).click(function(){
 			  $("."+modal_class).hide();
 	    });

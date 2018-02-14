@@ -2,6 +2,8 @@
 
 namespace Drupal\simple_popup_blocks\Form;
 
+use Drupal\Core\Url;
+use Drupal\Core\Routing;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -88,9 +90,16 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
     $form['close']['#default_value'] = $entry->close;
     $form['escape']['#default_value'] = $entry->escape;
     $form['overlay']['#default_value'] = $entry->overlay;
+    $form['trigger_method']['#default_value'] = $entry->trigger_method;
+    $form['trigger_selector']['#default_value'] = $entry->trigger_selector;
     $form['delay']['#default_value'] = $entry->delay;
     $form['width']['#default_value'] = $entry->width;
-    
+    $form['adjustments']['width'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Width'),
+      '#default_value' => 400,
+      '#description' => $this->t("Add popup width in pixels"),
+    ];     
 
     // Set a value by key.
     $form_state->set('simple_popup_blocks_id', $first);
@@ -132,6 +141,8 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
       'layout' => $form_state->getValue('layout'),
       'width' => $form_state->getValue('width'),
       'overlay' => $form_state->getValue('overlay'),
+      'trigger_method' => $form_state->getValue('trigger_method'),
+      'trigger_selector' => $form_state->getValue('trigger_selector'),      
       'escape' => $form_state->getValue('escape'),
       'delay' => $form_state->getValue('delay'),
       'minimize' => $form_state->getValue('minimize'),
@@ -140,8 +151,13 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
     ];
     $return = SimplePopupBlocksStorage::update($entry);
     if ($return) {
-      drupal_set_message($this->t('Updated entry @entry', ['@entry' => print_r($entry, TRUE)]));
-    }
+      drupal_set_message($this->t('Popup settings has been updated Successfully.'));
+      $url = Url::fromRoute('simple_popup_blocks.manage');
+      $form_state->setRedirectUrl($url);      
+    } 
+    else {
+      drupal_set_message($this->t('Error while creating.'),'error');
+    }    
   }
 
   /**

@@ -59,12 +59,25 @@ function simple_popup_blocks_schema() {
         'default' => 1,
         'description' => "ESC button to close popup",
       ], 
+      'trigger_method' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "Popup trigger method",
+      ],  
+      'trigger_selector' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => "Popup trigger selector",
+      ],      
       'delay' => [
         'type' => 'int',
         'not null' => TRUE,
-        'default' => 3,
+        'default' => 0,
         'description' => "Popup delay in seconds",
-      ],  
+      ],       
       'minimize' => [
         'type' => 'int',
         'not null' => TRUE,
@@ -77,25 +90,25 @@ function simple_popup_blocks_schema() {
         'default' => 1,
         'description' => "Enable Popup close button",
       ],        
-      'top' => [
+      'position_top' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 999999,
         'description' => "Popup top position",
       ],
-      'right' => [
+      'position_right' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 999999,
         'description' => "Popup right position",
       ], 
-      'bottom' => [
+      'position_bottom' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 999999,
         'description' => "Popup bottom position",
       ],
-      'left' => [
+      'position_left' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 999999,
@@ -115,9 +128,9 @@ function simple_popup_blocks_schema() {
       ],      
     ],
     'primary key' => ['pid'],
-/*    'unique keys' => [
+    'unique keys' => [
       'identifier' => ['identifier']
-    ],*/    
+    ],    
   ];
 
   return $schema;

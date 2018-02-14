@@ -93,9 +93,9 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
     // Add a checkbox to registration form for terms.
     $form['custom_css'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Add css id or class starting with # or .'),
-      '#default_value' => t("#custom-css-id"),
-      '#description' => $this->t("Ex: #my-profile, #custom_div_cls, .someclass, .mypopup-class."),
+      '#title' => $this->t('Add css id or class starting without # or .'),
+      '#default_value' => t("custom-css-id"),
+      '#description' => $this->t("Ex: my-profile, custom_div_cls, someclass, mypopup-class."),
       '#states' => [
         'visible' => [
           ':input[name="type"]' => ['value' => 1],
@@ -167,26 +167,49 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
       '#type' => 'checkbox',
       '#title' => $this->t('Show popup with overlay'),
       '#default_value' => 1,
-    ];             
+    ];  
+    $form['trigger_method'] = array(
+      '#type' => 'radios',
+      '#title' => $this
+        ->t('Trigger method'),
+      '#default_value' => 0,
+      '#options' => array(
+        0 => $this
+          ->t('Automatic'),
+        1 => $this
+          ->t('Manual - on click event'),
+      ),
+    );               
     $form['delay'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Delays'),
       '#size' => 5,
       '#default_value' => 0,
       '#description' => $this->t("Show popup after this seconds. 0 will show immediately after the page load."),
+      '#states' => [
+        'visible' => [
+          ':input[name="trigger_method"]' => ['value' => 0],
+        ],
+      ],      
     ];
+    $form['trigger_selector'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add css id or class starting with # or .'),
+      '#default_value' => t("#custom-css-id"),
+      '#description' => $this->t("Ex: #my-profile, #custom_div_cls, .someclass, .mypopup-class."),
+      '#states' => [
+        'visible' => [
+          ':input[name="trigger_method"]' => ['value' => 1],
+        ],
+      ],
+    ];     
     $form['adjustments'] = [
       '#type' => 'details',
       '#title' => $this->t('Adjustment settings'),
       '#open' => TRUE,
       '#description' => $this->t("Once you created, you can adjust the positions on this popup's edit page."),
     ];
-    $form['adjustments']['width'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Width'),
-      '#default_value' => 400,
-      '#description' => $this->t("Add popup width in pixels"),
-    ];    
+   
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Convert to popup'),
@@ -225,16 +248,18 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
       'css_selector' => $form_state->getValue('css_selector'),
       'layout' => $form_state->getValue('layout'),
       'overlay' => $form_state->getValue('overlay'),
+      'trigger_method' => $form_state->getValue('trigger_method'),
+      'trigger_selector' => $form_state->getValue('trigger_selector'),
       'escape' => $form_state->getValue('escape'),
       'delay' => $form_state->getValue('delay'),
       'minimize' => $form_state->getValue('minimize'),
       'close' => $form_state->getValue('close'),
-      'width' => $form_state->getValue('width'),
+      'width' => 400,
       'status' => 1,
     ];
     $return = SimplePopupBlocksStorage::insert($entry);
     if ($return) {
-      drupal_set_message($this->t('Simple popup block created Successfully with this settings.'));
+      drupal_set_message($this->t('Popup settings has been created Successfully.'));
       $url = Url::fromRoute('simple_popup_blocks.manage');
       $form_state->setRedirectUrl($url);      
     } 
