@@ -9,14 +9,12 @@ use Drupal\simple_popup_blocks\SimplePopupBlocksStorage;
 
 function simple_popup_blocks_page_attachments(array &$attachments) {
   $popup_settings = [];
-  $block_html_ids = [];
   foreach ($entries = SimplePopupBlocksStorage::loadAll() as $entry) {
     if ($entry->type == 0) {
       $theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
       $identifier = str_replace('_', '-', $entry->identifier);
       $entry->identifier = "block-".$identifier;  
     }
- 
     // Sanitize each entry.
     $popup_settings[] = array_map('Drupal\Component\Utility\SafeMarkup::checkPlain', (array) $entry);
   }

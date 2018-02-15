@@ -62,6 +62,58 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
   /**
    * {@inheritdoc}
    */
+  public function getCssValues($layout = 0, $overlay = 1) {
+    $top = 999999;
+    $right = 999999;
+    $bottom = 999999;
+    $left = 999999;
+    if ($overlay == 1) {
+      $top_layout = [0,1,5,6,7,9];
+      if (in_array($layout, $top_layout)) {
+        $top = 0;
+      }
+      $right_layout = [1,3,5];
+      if (in_array($layout, $right_layout)) {
+        $right = 0;
+      }
+      $bottom_layout = [2,3,8];
+      if (in_array($layout, $bottom_layout)) {
+        $bottom = 75;
+      }  
+      $bottom_layout = [7,9];
+      if (in_array($layout, $bottom_layout)) {
+        $bottom = 0;
+      }       
+      $left_layout = [9];
+      if (in_array($layout, $left_layout)) {
+        $left = 0;
+      }          
+    } else {
+      $top_layout = [0,1,5,6,8,9];
+      if (in_array($layout, $top_layout)) {
+        $top = 0;
+      }  
+      $right_layout = [1,3,6,7,9];
+      if (in_array($layout, $right_layout)) {
+        $right = 0;
+      }  
+      $bottom_layout = [2,3,7,8,9];
+      if (in_array($layout, $bottom_layout)) {
+        $bottom = -25;
+      }   
+      $left_layout = [0,2,6,7,8];
+      if (in_array($layout, $left_layout)) {
+        $left = 0;
+      }               
+    }
+    
+    $positions = ['top' => $top, 'right' => $right, 'bottom' => $bottom, 'left' => $left];
+    ksm($positions);
+    return $positions;
+  }
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     
     $block_ids = \Drupal::entityQuery('block')->execute();   
@@ -241,6 +293,7 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
     else {
       $identifier = $form_state->getValue('custom_css');
     }
+    $positions = $this->getCssValues($form_state->getValue('layout'), $form_state->getValue('overlay'));
     // Save the submitted entry.
     $entry = [
       'identifier' => $identifier,
@@ -255,17 +308,21 @@ class SimplePopupBlocksAddForm implements FormInterface, ContainerInjectionInter
       'minimize' => $form_state->getValue('minimize'),
       'close' => $form_state->getValue('close'),
       'width' => 400,
+      'position_top' => $positions['top'],
+      'position_right' => $positions['right'],
+      'position_bottom' => $positions['bottom'],
+      'position_left' => $positions['left'],      
       'status' => 1,
     ];
     $return = SimplePopupBlocksStorage::insert($entry);
-    if ($return) {
+/*    if ($return) {
       drupal_set_message($this->t('Popup settings has been created Successfully.'));
       $url = Url::fromRoute('simple_popup_blocks.manage');
       $form_state->setRedirectUrl($url);      
     } 
     else {
       drupal_set_message($this->t('Error while creating.'),'error');
-    }
+    }*/
     
   }
 

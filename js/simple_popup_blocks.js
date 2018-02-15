@@ -34,7 +34,8 @@
 			  $("."+modal_minimize_class).css({
 			  	"cursor": "pointer",
 			  	"border": "1px solid", 
-			  	"padding": "0 11px",  	
+			  	"padding": "0 11px", 
+			  	"margin": "3px",  	
 			  });		
 			  $(css_identity+block_id).before($('<span class="'+modal_minimized_class+'"></span>'));  
 				   
@@ -56,6 +57,7 @@
 			  	"cursor": "pointer",
 			  	"border": "1px solid", 
 			  	"padding": "0 10px",  	
+			  	"margin": "3px",
 			  });				
 		  } 	
 
@@ -68,7 +70,7 @@
 
 			  $("."+modal_class).css({
 			  	"position": "fixed", 
-			  	"z-index": "1", 
+			  	"z-index": "999999", 
 			  	"padding-top": "100px", 
 			  	"left": "0",
 			  	"top": "0", 
@@ -91,37 +93,36 @@
 			  $("."+modal_minimize_class).css({
 			  	"float": "right",	
 			  });		
-
 				switch (values.layout) {
 					// Top left
 				  case '0':
 					  $(css_identity+block_id).css({
-					  	"top": "0px",
+					  	"top": values.position_top+"px",
 					  	"width": values.width,
 					  });	 
 				    break;
 				  // Top right
 				  case '1':
 					  $(css_identity+block_id).css({
-					  	"top": "0px",
-					  	"right": "0px",
+					  	"top": values.position_top+"px",
+					  	"right": values.position_right+"px",
 					  	"width": values.width,
 					  });
 				    break;
 				  // Bottom left  
 				  case '2':
 					  $(css_identity+block_id).css({
-					  	"bottom": "75px",
-					  	// "bottom": values.bottom,
+					  	"bottom": values.position_bottom+"px",
+					  	
 					  	"width": values.width,
 					  });
 				    break;
 				  // Bottom right  
 				  case '3':
 					  $(css_identity+block_id).css({
-					  	"right": "0px",
-					  	"bottom": "80px",
-					  	// "bottom": values.bottom,
+					  	"right": values.position_right+"px",
+					  	"bottom": values.position_bottom+"px",
+					  	
 					  	"width": values.width,
 					  });
 				     break;
@@ -130,13 +131,13 @@
 					  $(css_identity+block_id).css({
 					  	"margin": "auto",
 					  	"width": values.width,
-					  	// "bottom": values.bottom,
+					  	
 					  });
 				    break;
 				  // Top Center
 				  case '5':
 					  $(css_identity+block_id).css({
-					  	"top": "0",
+					  	"top": values.position_top+"px",
 					  	"left": "20%",
 					  	"right": "20%",					  	
 					  });
@@ -144,31 +145,31 @@
 				  // Top bar
 				  case '6':
 					  $(css_identity+block_id).css({
-							"top": "0",
+							"top": values.position_top+"px",
 					  });
 				    break;
 				  // Right bar
 				  case '7':
 					  $(css_identity+block_id).css({
-					  	"top": "0",
-					  	"bottom": "0",
-					  	"right": "0",
+					  	"top": values.position_top+"px",
+					  	"bottom": values.position_bottom+"px",
+					  	"right": values.position_right+"px",
 					  	"width": values.width,
-					  	// "bottom": values.bottom,
+					  	
 					  });
 				    break;
 				  // Bottom bar
 				  case '8':
 					  $(css_identity+block_id).css({
-					  	"bottom": "65px",
+					  	"bottom": values.position_bottom+"px",
 					  });
 				    break;		
 				  // Right bar
 				  case '9':
 					  $(css_identity+block_id).css({
 					  	"top": "0",
-					  	"bottom": "0",
-					  	"left": "0",
+					  	"bottom": values.position_bottom+"px",
+					  	"left": values.position_left+"px",
 					  	"width": values.width,
 					  });
 				    break;				    		    				    				    
@@ -178,7 +179,9 @@
 			  $(css_identity+block_id).css({
 			  	"position": "fixed",
 			  	"background-color": "rgb(254, 254, 254)",
-			  	"z-index": "1",	
+			  	"padding": "10px",	
+			  	"border": "1px solid",
+			  	"z-index": "999999", 
 			  });	      	
 			  $("."+modal_minimize_class).css({
 			  	"position": "absolute", 
@@ -194,34 +197,34 @@
 					// Top left
 				  case '0':
 					  $(css_identity+block_id).css({
-					  	"top": "0px",
-					  	"left": "0px",
+					  	"top": values.position_top+"px",
+					  	"left": values.position_left+"px",
 					  	"width": values.width,
 					  });	 
 				    break;
 				  // Top right
 				  case '1':
 					  $(css_identity+block_id).css({
-					  	"top": "0px",
-					  	"right": "0px",
+					  	"top": values.position_top+"px",
+					  	"right": values.position_right+"px",
 					  	"width": values.width,
 					  });
 				    break;
 				  // Bottom left  
 				  case '2':
 					  $(css_identity+block_id).css({
-					  	"left": "0px",
-					  	"bottom": "-25px",
-					  	// "bottom": values.bottom,
+					  	"left": values.position_left+"px",
+					  	"bottom": values.position_bottom+"px",
+					  	
 					  	"width": values.width,
 					  });
 				    break;
 				  // Bottom right  
 				  case '3':
 					  $(css_identity+block_id).css({
-					  	"right": "0px",
-					  	"bottom": "-25px",
-					  	// "bottom": values.bottom,
+					  	"right": values.position_right+"px",
+					  	"bottom": values.position_bottom+"px",
+					  	
 					  	"width": values.width,
 					  });
 				     break;
@@ -232,31 +235,32 @@
 					  	"width": values.width,
 					  	"top": "30%",
 					  	"left": "40%",					  	
-					  	// "bottom": values.bottom,
+					  	
 					  });
 				    break;
 				  // Top center
 				  case '5':
 					  $(css_identity+block_id).css({
+					  	"top": values.position_top+"px",
 					  	"margin": "auto",
 					  	"width": values.width,
-					  	// "bottom": values.bottom,
+					  	
 					  });
 				    break;
 				  // Top bar
 				  case '6':
 					  $(css_identity+block_id).css({
-					  	"top": "0",
-					  	"left": "0",
-					  	"right": "0",
+					  	"top": values.position_top+"px",
+					  	"left": values.position_left+"px",
+					  	"right": values.position_right+"px",
 					  });
 				    break;
 				  // Bottom bar
 				  case '7':
 					  $(css_identity+block_id).css({
-					  	"bottom": "-25px",
-					  	"left": "0",
-					  	"right": "0",
+					  	"bottom": values.position_bottom+"px",
+					  	"left": values.position_left+"px",
+					  	"right": values.position_right+"px",
 					  });
 				    break;
 				  // Left bar
@@ -264,9 +268,9 @@
 					  $(css_identity+block_id).css({
 					  	"margin": "auto",
 					  	"width": values.width,
-					  	"top": "0",
-					  	"left": "0",	
-					  	"bottom": "-20px",	
+					  	"top": values.position_top+"px",
+					  	"left": values.position_left+"px",	
+					  	"bottom": values.position_bottom+"px",	
 					  });
 				    break;		
 				  // Right bar
@@ -274,20 +278,20 @@
 					  $(css_identity+block_id).css({
 					  	"margin": "auto",
 					  	"width": values.width,
-					  	"top": "0",
-					  	"right": "0",	
-					  	"bottom": "-20px",					  	
-					  	// "bottom": values.bottom,
+					  	"top": values.position_top+"px",
+					  	"right": values.position_right+"px",	
+					  	"bottom": values.position_bottom+"px",					  	
+					  	
 					  });
 				    break;				    		    				    				    
 				}
       }
-			if (values.trigger == 0 && values.delay > 0) {
+			if (values.trigger_method == 0 && values.delay > 0) {
 				var delays = values.delay * 1000;
 			  $("."+modal_class).hide();
 			  $("."+modal_class).delay(delays).fadeIn('slow');
 			} 
-			else if(values.trigger == 1) {
+			else if(values.trigger_method == 1) {
 				$("."+modal_class).hide();
 		    $(values.trigger_selector).click(function(){
 				  $("."+modal_class).show();
@@ -297,11 +301,11 @@
 			  $("."+modal_class).hide();
 	    });
 	    $("."+modal_minimize_class).click(function(){
-			  $(css_identity+block_id).hide();
+			  $(css_identity+modal_class).hide();
 			  $("."+modal_minimized_class).show();
 	    });
 	    $("."+modal_minimized_class).click(function(){
-			  $(css_identity+block_id).show();
+			  $(css_identity+modal_class).show();
 			  $("."+modal_minimized_class).hide();
 	    });
 

@@ -100,7 +100,30 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
       '#default_value' => 400,
       '#description' => $this->t("Add popup width in pixels"),
     ];     
-
+    $form['adjustments']['top'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Top'),
+      '#default_value' => '',
+      '#description' => $this->t("Popup's css top positions in pixels"),
+    ];
+    $form['adjustments']['right'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Right'),
+      '#default_value' => '',
+      '#description' => $this->t("Popup's css right positions in pixels"),
+    ];  
+    $form['adjustments']['bottom'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Bottom'),
+      '#default_value' => '',
+      '#description' => $this->t("Popup's css bottom positions in pixels"),
+    ];      
+    $form['adjustments']['left'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Left'),
+      '#default_value' => '',
+      '#description' => $this->t("Popup's css left positions in pixels"),
+    ];    
     // Set a value by key.
     $form_state->set('simple_popup_blocks_id', $first);
     return $form;
@@ -132,6 +155,10 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
     else {
       $identifier = $form_state->getValue('custom_css');
     }
+    $top = !empty($form_state->getValue('top')) ? $form_state->getValue('top') : 999999;
+    $right = !empty($form_state->getValue('right')) ? $form_state->getValue('right') : 999999;
+    $bottom = !empty($form_state->getValue('bottom')) ? $form_state->getValue('bottom') : 999999;
+    $left = !empty($form_state->getValue('left')) ? $form_state->getValue('left') : 999999;
     // Save the submitted entry.  
     $entry = [
       'pid' => $first,
@@ -139,7 +166,6 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
       'type' => $form_state->getValue('type'),
       'css_selector' => $form_state->getValue('css_selector'),
       'layout' => $form_state->getValue('layout'),
-      'width' => $form_state->getValue('width'),
       'overlay' => $form_state->getValue('overlay'),
       'trigger_method' => $form_state->getValue('trigger_method'),
       'trigger_selector' => $form_state->getValue('trigger_selector'),      
@@ -147,6 +173,11 @@ class SimplePopupBlocksEditForm extends SimplePopupBlocksAddForm {
       'delay' => $form_state->getValue('delay'),
       'minimize' => $form_state->getValue('minimize'),
       'close' => $form_state->getValue('close'),
+      'width' => $form_state->getValue('width'),      
+      'position_top' => $top,
+      'position_right' => $right,
+      'position_bottom' => $bottom,
+      'position_left' => $left,
       'status' => $form_state->getValue('status'),
     ];
     $return = SimplePopupBlocksStorage::update($entry);
